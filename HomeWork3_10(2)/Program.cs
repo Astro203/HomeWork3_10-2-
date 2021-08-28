@@ -9,56 +9,68 @@ namespace HomeWork3_10_2_
         {
             //Задани2. Повышение уровня сложности игры или увеличение числа игроков
 
-            Console.Write("Введите произвольное положительное целое число: "); int gameNumber = int.Parse(Console.ReadLine());
-            Console.Write("Введите произвольное минимальное положительное целое число: "); int minUserTry = int.Parse(Console.ReadLine());
-            Console.Write("Введите произвольное максимальное положительное целое число: "); int maxUserTry = int.Parse(Console.ReadLine());
+            Console.Write("Введите произвольное положительное целое число: "); int gameNumber = int.Parse(Console.ReadLine()); //ввод начального числа
+            Console.Write("Введите произвольное минимальное положительное целое число: "); int minUserTry = int.Parse(Console.ReadLine()); //ввод минимального числа для выбора игрока
+            Console.Write("Введите произвольное максимальное положительное целое число: "); int maxUserTry = int.Parse(Console.ReadLine()); //ввод максимального числа для выбора игрока
 
-            List<string> names = new List<string>();
+            List<string> names = new List<string>(); //добавление списка имен игроков
             int i = 1;
             string name="";
-            string revansh = "";
+            string revansh = "да";
             bool f = false;
-            while((name != "+") || (i <= 2))
+            Console.WriteLine("\nДалее введите имена игроков. Окончание заполнения - символ '+'"); //описание условия для завершения ввода имен игроков
+            while(true) 
             {
-                Console.Write("Пожалуйста, представьтесь: "); name = Console.ReadLine();
-                names.Add(name);
-                i++;
+                Console.Write("Пожалуйста, представьтесь: "); name = Console.ReadLine(); //ввод имени игрока
+                if (name != "+") //если введенная строка не равна '+', то...
+                {
+                    names.Add(name); //добавить в список введенное имя
+                    i++; //инкремент для подсчета количества игроков
+                }
+                else //если введенная строка равна '+', то...
+                {
+                    if (i <= 2) continue; //если количество игроков меньше трех, то переход на следующую итерацию цикла для повторного ввода имени
+                    else break; //если число игроков три или более, то заввершение цикла (также при условии, что введен '+')
+                }
             }
 
-            i = 1;
-            while((revansh == "да") && (f == false))
+            Console.WriteLine(); //переход в консоли на строку ниже
+            i = 0;
+            while((revansh == "да") && (f == false)) //пока победитель соглашается на реванш или нет ничьей выполнять...
             {
-                while((gameNumber != 0) && (f == false))
+                while((gameNumber != 0) && (f == false)) //пока итоговый gameNumber не равен нулю, выполнять...
                 {
-                    foreach(string n in names)
+                    foreach(string n in names) //цикл для очередности хода
                     {
-                        Console.Write($"{names[i]}, введите произвольное положительное целое число от {minUserTry} до {maxUserTry}: "); int userTry = int.Parse(Console.ReadLine());
-                        if (userTry > 1)
+                        Console.Write($"{names[i]}, введите произвольное положительное целое число от {minUserTry} до {maxUserTry}: "); int userTry = int.Parse(Console.ReadLine()); //ввод игроками числа между мин и макс
+                        if (userTry >= 1) //если введенное число больше 1, то...
                         {
-                            if (gameNumber > userTry)
+                            if (gameNumber >= userTry) //если введенное число больше итогового gameNumber, то...
                             {
-                                if ((userTry >= minUserTry) && (userTry <= maxUserTry))
+                                if ((userTry >= minUserTry) && (userTry <= maxUserTry)) //если введенное число находится между мин и макс, то...
                                 {
-                                    gameNumber -= userTry;
+                                    gameNumber -= userTry; //вычитание из gameNumber введенного числа
+                                    Console.WriteLine($"Оставшееся число: {gameNumber}"); //вывод оставшегося gameNumber
                                 }
-                                else
+                                else //если число не входит в диапазон, то...
                                 {
-                                    i++;
-                                    continue;
+                                    i++; //индекс следующего игрока в списке
+                                    Console.WriteLine("Переход хода");
+                                    continue; //переход хода к следующему по списку игроку
                                 }
                             }
-                            else
+                            else //если gameNumber < введенного числа, то...
                             {
-                                f = true;
-                                Console.WriteLine("Объявляется ничья");
-                                break;
+                                f = true; //дополнительная переменная для завершения игры при "ничьей"
+                                Console.WriteLine("Объявляется ничья"); //объявляется ничья
+                                break; //завершение цикла очередности хода
                             }
                         }
                     }
-                    i = 0;
+                    i = 0; //индекс обнулен для обращения к первому игроку, при переходе хода от крайнего игрока в списке
                 }
-                Console.WriteLine($"Победитель {names[i]}!");
-                Console.Write($"{names[i]}, Вы согласны на реванш? введите 'да' или 'нет': "); revansh = Console.ReadLine();
+                Console.WriteLine($"Победитель {names[i + 1]}!"); //вывод имени победителя
+                Console.Write($"{names[i + 1]}, Вы согласны на реванш? введите 'да' или 'нет': "); revansh = Console.ReadLine(); //предложение победителю реванша
             }
         }
     }
