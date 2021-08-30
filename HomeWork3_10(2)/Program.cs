@@ -9,6 +9,16 @@ namespace HomeWork3_10_2_
         {
             //Задани2. Повышение уровня сложности игры или увеличение числа игроков
 
+            Console.ForegroundColor = ConsoleColor.Green; //Цвет текста выводимый далее в консоль зеленый
+            Console.WriteLine("Правила игры:");
+            Console.WriteLine("Загадывается число от 12 до 120, причем случайным образом. Назовем его gameNumber.");
+            Console.WriteLine("Игроки по очереди выбирают число от одного до четырех. Пусть это число обозначается как userTry.");
+            Console.WriteLine("userTry после каждого хода вычитается из gameNumber, а само gameNumber выводится на экран.");
+            Console.WriteLine("Если после хода игрока gameNumber равняется нулю, то походивший игрок объявляется победителем.");
+            Console.WriteLine("Число четыре вводить нельзя, если userTry больше чем gameNumber");
+            Console.ResetColor(); //Сброс цвета на стандартный
+            Console.WriteLine();
+
             Console.Write("Введите произвольное положительное целое число: "); int gameNumber = int.Parse(Console.ReadLine()); //ввод начального числа
             Console.Write("Введите произвольное минимальное положительное целое число: "); int minUserTry = int.Parse(Console.ReadLine()); //ввод минимального числа для выбора игрока
             Console.Write("Введите произвольное максимальное положительное целое число: "); int maxUserTry = int.Parse(Console.ReadLine()); //ввод максимального числа для выбора игрока
@@ -17,7 +27,7 @@ namespace HomeWork3_10_2_
             int i = 1;
             string name="";
             string revansh = "да";
-            bool f = false;
+            bool draw = false; //переменная для случая "ничья"
             Console.WriteLine("\nДалее введите имена игроков. Окончание заполнения - символ '+'"); //описание условия для завершения ввода имен игроков
             while(true) 
             {
@@ -36,11 +46,11 @@ namespace HomeWork3_10_2_
 
             Console.WriteLine(); //переход в консоли на строку ниже
             i = 0;
-            while((revansh == "да") && (f == false)) //пока победитель соглашается на реванш или нет ничьей выполнять...
+            while((revansh == "да") && (!draw)) //пока победитель соглашается на реванш или нет ничьей выполнять и нет "ничьей", выполнять...
             {
-                while((gameNumber != 0) && (f == false)) //пока итоговый gameNumber не равен нулю, выполнять...
+                while((gameNumber != 0) && (!draw)) //пока итоговый gameNumber не равен нулю и нет "ничьей", выполнять...
                 {
-                    foreach(string n in names) //цикл для очередности хода
+                    foreach(var n in names) //цикл для очередности хода
                     {
                         Console.Write($"{names[i]}, введите произвольное положительное целое число от {minUserTry} до {maxUserTry}: "); int userTry = int.Parse(Console.ReadLine()); //ввод игроками числа между мин и макс
                         if (userTry >= 1) //если введенное число больше 1, то...
@@ -61,7 +71,7 @@ namespace HomeWork3_10_2_
                             }
                             else //если gameNumber < введенного числа, то...
                             {
-                                f = true; //дополнительная переменная для завершения игры при "ничьей"
+                                draw = true; //достижение ситуации "ничья"
                                 Console.WriteLine("Объявляется ничья"); //объявляется ничья
                                 break; //завершение цикла очередности хода
                             }
